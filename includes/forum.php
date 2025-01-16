@@ -1116,6 +1116,23 @@ class AsgarosForum {
         // Create a unique slug for this topic if necessary.
         $topic = $this->content->get_topic($this->current_topic);
 
+        // Check if the topic has the 'last_activity' property
+        if (property_exists($topic, 'last_activity')) {
+            // Check if the topic has been inactive for 7 days and close it if necessary
+            $lastActivityTimestamp = strtotime($topic->last_activity);
+            $sevenDaysAgo = strtotime('-7 days');
+    
+            if ($lastActivityTimestamp < $sevenDaysAgo && $topic->status !== 'Closed') {
+                // Additional check for user role before updating status
+                $current_user_id = get_current_user_id();
+    
+                if ($this->permissions->isAdministrator($current_user_id) || $this->permissions->isModerator($current_user_id)) {
+                    $this->db->update($this->tables->topics, array('status' => 'Closed'), array('id' => $topic->id), array('%s'), array('%d'));
+                    $topic->status = 'Closed';  // Update the current topic object
+                }
+            }
+        }
+
         if (empty($topic->slug)) {
             $slug = $this->rewrite->create_unique_slug($topic->name, $this->tables->topics, 'topic');
             $this->db->update($this->tables->topics, array('slug' => $slug), array('id' => $topic->id), array('%s'), array('%d'));
