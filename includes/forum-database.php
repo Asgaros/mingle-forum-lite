@@ -161,10 +161,11 @@ class AsgarosForumDatabase {
             ) $charset_collate;";
 
             $sql[] = 'CREATE TABLE '.$this->tables->reports." (
-            post_id int(11) NOT NULL default '0',
-            reporter_id int(11) NOT NULL default '0',
-            PRIMARY KEY  (post_id, reporter_id)
-            ) $charset_collate;";
+                post_id int(11) NOT NULL default '0',
+                reporter_id int(11) NOT NULL default '0',
+                reason text,
+                PRIMARY KEY  (post_id, reporter_id)
+                ) $charset_collate;";
 
             $sql[] = 'CREATE TABLE '.$this->tables->reactions." (
             post_id int(11) NOT NULL default '0',

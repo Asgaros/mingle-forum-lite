@@ -23,22 +23,23 @@ class AsgarosForumReports {
 
     public function render_report_button($post_id, $topic_id) {
         $output = '';
-
+    
         if ($this->asgarosforum->options['reports_enabled']) {
             // Only show a report button when the user is logged-in.
             if (is_user_logged_in()) {
                 $reporter_id = get_current_user_id();
-
+    
                 if (!$this->report_exists($post_id, $reporter_id)) {
-                    $report_message = __('Are you sure that you want to report this post?', 'asgaros-forum');
+                    // Add a prompt for the reason
+                    $reason_prompt = __('Please provide a reason for reporting:', 'asgaros-forum');
                     $report_href    = $this->asgarosforum->rewrite->get_link('topic', $topic_id, array(
-						'post'       => $post_id,
-						'report_add' => 1,
-						'part'       => ($this->asgarosforum->current_page + 1),
-						'_wpnonce'   => wp_create_nonce('asgaros_forum_report_add'),
-					), '#postid-'.$post_id);
-
-                    $output .= '<a href="'.$report_href.'" title="'.__('Report Post', 'asgaros-forum').'" onclick="return confirm(\''.$report_message.'\');">';
+                        'post'       => $post_id,
+                        'report_add' => 1,
+                        'part'       => ($this->asgarosforum->current_page + 1),
+                        '_wpnonce'   => wp_create_nonce('asgaros_forum_report_add'),
+                    ), '#postid-'.$post_id);
+    
+                    $output .= '<a href="#" title="'.__('Report Post', 'asgaros-forum').'" onclick="reportPost(\''.$report_href.'\', '.$post_id.', '.$reporter_id.'); return false;">';
                     $output .= '<span class="report-link fas fa-exclamation-triangle">';
                     $output .= '<span class="screen-reader-text">'.__('Click to report post.', 'asgaros-forum').'</span>';
                     $output .= '</span>';
@@ -48,11 +49,35 @@ class AsgarosForumReports {
                 }
             }
         }
-
+    
+        // JavaScript function to add the report
+        $output .= '<script>
+        function reportPost(reportHref, postId, reporterId) {
+            var reason = prompt("Please provide a reason for reporting:");
+            if (reason !== null) {
+                jQuery.ajax({
+                    url: reportHref,
+                    type: "GET",
+                    data: {
+                        reason: encodeURIComponent(reason),
+                    },
+                    success: function (response) {
+                        alert("Report added successfully");
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Failed to add report. Server returned: " + error);
+                    },
+                });
+            }
+        }
+        
+                    </script>';
+    
         return $output;
     }
-
-    public function add_report($post_id, $reporter_id) {
+    
+    
+    public function add_report($post_id, $reporter_id, $reason) {
         // Only add a report when the post exists ...
         if ($this->asgarosforum->content->post_exists($post_id)) {
             // ... and the user is logged in ...
@@ -60,20 +85,21 @@ class AsgarosForumReports {
                 // ... and when there is not already a report from the user.
                 if (!$this->report_exists($post_id, $reporter_id)) {
                     $this->asgarosforum->db->insert($this->asgarosforum->tables->reports, array(
-						'post_id'     => $post_id,
-						'reporter_id' => $reporter_id,
-					), array('%d', '%d'));
-
+                        'post_id'     => $post_id,
+                        'reporter_id' => $reporter_id,
+                        'reason'      => $reason,
+                    ), array('%d', '%d', '%s'));
+    
                     // Send notification to site owner about new report.
                     $this->send_notification($post_id, $reporter_id);
-
+    
                     // Add the value also to the reports array.
                     $this->current_user_reports[] = $post_id;
                 }
             }
         }
     }
-
+    
     public function send_notification($post_id, $reporter_id) {
         if ($this->asgarosforum->options['reports_notifications']) {
             $report = $this->get_report($post_id, $reporter_id);

@@ -597,14 +597,22 @@ class AsgarosForum {
 				}
 			}
         } else if (isset($_GET['report_add'])) {
-			if (!empty($_REQUEST['_wpnonce'])) {
-				if (wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), 'asgaros_forum_report_add')) {
-					$post_id     = (!empty($_GET['post'])) ? absint($_GET['post']) : 0;
-					$reporter_id = get_current_user_id();
+            if (!empty($_GET['_wpnonce'])) {
+                if (wp_verify_nonce(sanitize_text_field($_GET['_wpnonce']), 'asgaros_forum_report_add')) {
+                    $post_id     = (!empty($_GET['post'])) ? absint($_GET['post']) : 0;
+                    $reporter_id = get_current_user_id();
+                    $reason      = isset($_GET['reason']) ? sanitize_text_field(urldecode($_GET['reason'])) : '';
 
-					$this->reports->add_report($post_id, $reporter_id);
-				}
-			}
+                    if (!empty($reason)) {
+                        $this->reports->add_report($post_id, $reporter_id, $reason);
+                    } else {
+                        error_log("Report reason not set.");
+                    }
+                } else {
+                    error_log("Nonce verification failed.");
+                }
+                
+            }
         } else if (!empty($_GET['report_delete']) && is_numeric($_GET['report_delete'])) {
 			if (!empty($_REQUEST['_wpnonce'])) {
 				if (wp_verify_nonce(sanitize_key($_REQUEST['_wpnonce']), 'asgaros_forum_report_delete')) {
