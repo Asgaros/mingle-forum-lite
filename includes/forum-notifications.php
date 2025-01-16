@@ -455,7 +455,7 @@ class AsgarosForumNotifications {
 
         // Only apply username-replacement when the user exists, other use a more general replacement.
         if ($user) {
-            $message_template = str_replace('###USERNAME###', $user->display_name, $message_template);
+            $message_template = str_replace('###USERNAME###', $user->user_login, $message_template);
         } else {
             $message_template = str_replace('###USERNAME###', __('User', 'asgaros-forum'), $message_template);
         }
