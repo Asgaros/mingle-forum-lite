@@ -830,6 +830,10 @@ if (!defined('ABSPATH')) {
                             <th><label for="hide_spoilers_from_guests"><?php esc_html_e('Hide spoilers from logged-out users', 'asgaros-forum'); ?></label></th>
                             <td><input type="checkbox" name="hide_spoilers_from_guests" id="hide_spoilers_from_guests" <?php checked(!empty($this->asgarosforum->options['hide_spoilers_from_guests'])); ?>></td>
                         </tr>
+                        <tr class="spoilers-option-replied" <?php if (!$spoilers_option) { echo 'style="display: none;"'; } ?>>
+                            <th><label for="hide_spoilers_until_replied"><?php esc_html_e('Hide spoilers until replied', 'asgaros-forum'); ?></label></th>
+                            <td><input type="checkbox" name="hide_spoilers_until_replied" id="hide_spoilers_until_replied" <?php echo $hide_spoilers_until_replied; ?>></td>
+                        </tr>
                     </table>
                 </div>
 

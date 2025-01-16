@@ -146,6 +146,7 @@ class AsgarosForum {
         'title_separator'                  => '-',
         'enable_spoilers'                  => true,
         'hide_spoilers_from_guests'        => false,
+        'hide_spoilers_until_replied'      => false,
         'subforums_location'               => 'above',
         'enable_reputation'                => true,
         'reputation_level_1_posts'         => 10,
