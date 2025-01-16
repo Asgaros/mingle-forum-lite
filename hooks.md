@@ -249,7 +249,7 @@ Make some action after the content header
 - [asgarosforum_filter_username](#asgarosforum_filter_username)
 - asgarosforum_filter_login_message
 - [asgarosforum_filter_post_username](#asgarosforum_filter_post_username)
-- asgarosforum_filter_post_content
+- [asgarosforum_filter_post_content](#asgarosforum_filter_post_content)
 - asgarosforum_filter_post_shortcodes
 - asgarosforum_filter_editor_settings
 - asgarosforum_filter_editor_buttons
@@ -388,6 +388,44 @@ Change Username in a post. You can also use it to add some further information a
 [post-element.php](includes/post-element.php)
 
 ### asgarosforum_filter_post_content
+
+#### Description
+Use custom filters for post content.
+
+#### Usage
+
+```php
+<?php
+   add_filter('asgarosforum_filter_post_content', 'function_name', 10, 2);
+?>
+```
+
+#### Examples
+
+```php
+<?php
+   // Add filter to hide images from logged out users
+   add_filter('asgarosforum_filter_post_content', 'remove_images', 10, 2);
+
+   function remove_images($post_content, $post_id){
+      // Check if user ist logged in
+      if (!is_user_logged_in()){
+               
+         // Remove all image tags
+         $re = '/<\s*?img.*?>/m';
+         $post_content = preg_replace($re, '', $post_content);
+
+      }  
+
+      return $post_content;
+
+   }
+?>
+```
+
+#### Source
+
+[post-element.php](includes/post-element.php)
 
 ### asgarosforum_filter_post_shortcodes
 
