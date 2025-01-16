@@ -1,9 +1,19 @@
+:root {
+    --white: #ffffff;
+	--rossocorsa: #e00000;
+	--forestgreen: #099922;
+	--whitesmoke: #f7f7f7;
+	--lightgrey: #d1d1d1;
+	--dimgray: #686868;
+	--lochmara: #256db3;
+	--verylightgrey: #ccc;
+  }
 .asgarosforum-widget {
 	font-size: 12px;
 }
 .asgarosforum-widget .widget-element {
 	display: table;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid var(--verylightgrey);
 	margin-bottom: 8px;
 	padding-bottom: 8px;
 	width: 100%;
@@ -32,11 +42,11 @@
 }
 .asgarosforum-widget .highlight-admin,
 .asgarosforum-widget .highlight-admin a {
-	color: #e00000 !important;
+	color: var(--rossocorsa);
 }
 .asgarosforum-widget .highlight-moderator,
 .asgarosforum-widget .highlight-moderator a {
-	color: #099922 !important;
+	color: var(--forestgreen);
 }
 .asgarosforum-widget .post-link a,
 .asgarosforum-widget .post-author a {
@@ -59,19 +69,19 @@
 	position: relative;
 }
 .asgarosforum-widget-search input[type="search"] {
-	background: #f7f7f7;
-	border: 1px solid #d1d1d1;
+	background: var(--whitesmoke);
+	border: 1px solid var(--lightgrey);
 	border-radius: 0;
-	color: #686868;
+	color: var(--dimgray);
 	padding: 0.625em 0.4375em;
 	width: 100%;
 	height: 35px;
 }
 .asgarosforum-widget-search button {
-	background: #256db3;
+	background: var(--lochmara);
 	border: 0;
 	border-radius: 0;
-	color: #fff;
+	color: var(--white);
 	padding: 0;
 	bottom: 0;
 	right: 0;

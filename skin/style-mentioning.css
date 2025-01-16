@@ -1,15 +1,24 @@
+:root {
+    --white: #ffffff;
+    --mediumgray: #444;
+    --alabaster: #fafafa;
+    --gray: #888;
+    --whisper: #eee;
+	--blue: #256db3;
+	--transparent: rgba(27,31,35,.1);
+  }
 .atwho-view {
-	background: #fff;
+	background: var(--white);
 	border-radius: 2px;
-	border: 1px solid #eee;
-	color: #444;
+	border: 1px solid var(--whisper);
+	color: var(--mediumgray);
 	display: none;
 	font-family: sans-serif;
 	margin-top: 18px;
 	position: absolute;
 	top: 0;
 	z-index: 1000; /* >999 for wp-admin */
-	box-shadow: 0 0 5px rgba(27,31,35,.1);
+	box-shadow: 0 0 5px var(--transparent);
 }
 /* rtl:ignore */
 .atwho-view {
@@ -21,7 +30,7 @@
 	padding: 0;
 }
 .atwho-view ul li {
-	border-bottom: 1px solid #eee;
+	border-bottom: 1px solid var(--whisper);
 	box-sizing: content-box;
 	cursor: pointer;
 	display: block;
@@ -43,17 +52,17 @@
 	font-weight: 700;
 }
 .atwho-view .username strong {
-	color: #256db3;
+	color: var(--blue);
 }
 .atwho-view small {
-	color: #888;
+	color: var(--gray);
 	float: right;
 	font-size: smaller;
 	font-weight: 400;
 	margin: 0 10px 0 40px;
 }
 .atwho-view .cur {
-	background: #fafafa;
+	background: var(--alabaster);
 }
 @media (max-width: 900px) {
 	.atwho-view img {
