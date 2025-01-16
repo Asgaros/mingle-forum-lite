@@ -1001,22 +1001,22 @@ class AsgarosForum {
 						$this->render_lastpost_in_forum($forum->id, true);
 					echo '</small>';
 
-					// Show subforums.
-					if ($forum->count_subforums > 0) {
-						echo '<small class="forum-subforums">';
-						echo '<b>'.esc_html__('Subforums', 'asgaros-forum').':</b>&nbsp;';
-
-						$subforums          = $this->get_forums($forum->parent_id, $forum->id);
-						$subforumsFirstDone = false;
-
-						foreach ($subforums as $subforum) {
-							echo ($subforumsFirstDone) ? '&nbsp;&middot;&nbsp;' : '';
-							echo '<a href="'.esc_url($this->get_link('forum', absint($subforum->id))).'">'.esc_html(stripslashes($subforum->name)).'</a>';
-							$subforumsFirstDone = true;
-						}
-
-						echo '</small>';
-					}
+					 // Show subforums.
+                     if ($forum->count_subforums > 0 && $this->options['show_subforums']) {
+                        echo '<small class="forum-subforums">';
+                        echo '<b>' . esc_html__('Subforums', 'asgaros-forum') . ':</b>&nbsp;';
+    
+                        $subforums = $this->get_forums($forum->parent_id, $forum->id);
+                        $subforumsFirstDone = false;
+    
+                        foreach ($subforums as $subforum) {
+                            echo ($subforumsFirstDone) ? '&nbsp;&middot;&nbsp;' : '';
+                            echo '<a href="' . esc_url($this->get_link('forum', absint($subforum->id))) . '">' . esc_html(stripslashes($subforum->name)) . '</a>';
+                            $subforumsFirstDone = true;
+                        }
+    
+                        echo '</small>';
+                    }
 				echo '</div>';
 				do_action('asgarosforum_custom_forum_column', $forum->id);
 				echo '<div class="forum-poster">';

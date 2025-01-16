@@ -14,6 +14,19 @@ window.FontAwesomeConfig = {
             }
         }
 
+        function toggleSubforumsVisibility() {
+            var showSubforums = $('#show_subforums').prop('checked');
+            $('.forum-subforums').toggleClass('hide-subforums', !showSubforums);
+        }
+
+        // Initial call to set visibility based on the checkbox status on page load
+        toggleSubforumsVisibility();
+
+        // Attach an event listener to the checkbox change event
+        $('#show_subforums').on('change', function() {
+            toggleSubforumsVisibility();
+        });
+
         // Settings-tabs toggle.
         $('#af-options #settings-tabs li').click(function() {
             // Get slug.

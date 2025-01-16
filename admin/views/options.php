@@ -243,6 +243,10 @@ if (!defined('ABSPATH')) {
                     <?php $this->render_options_header('features'); ?>
                     <table>
                         <tr>
+                            <th><label for="show_subforums"><?php esc_html_e('Show sub-forums in the overview', 'asgaros-forum'); ?></label></th>
+                            <td><input type="checkbox" name="show_subforums" id="show_subforums" <?php checked(!empty($this->asgarosforum->options['show_subforums'])); ?>></td>
+                        </tr>
+                        <tr>
                             <th><label for="enable_avatars"><?php esc_html_e('Enable Avatars', 'asgaros-forum'); ?></label></th>
                             <td><input type="checkbox" name="enable_avatars" id="enable_avatars" <?php checked(!empty($this->asgarosforum->options['enable_avatars'])); ?>></td>
                         </tr>

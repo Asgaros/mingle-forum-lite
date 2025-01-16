@@ -281,10 +281,13 @@ li.forum-user-group {
     display: block;
 }
 #af-structure .subforum {
-    display: block;
     margin-left: 16px;
     border-left: 2px solid #e5e5e5;
-    padding-left: 4px
+    padding-left: 4px;
+}
+
+#af-structure .subforum.hide-subforums {
+    display: none;
 }
 #af-structure th {
     width: initial;
