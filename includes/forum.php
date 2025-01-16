@@ -1027,7 +1027,30 @@ class AsgarosForum {
 
         do_action('asgarosforum_after_forum');
     }
+    public function get_search_keywords() {
+        return isset($_GET['s']) ? sanitize_text_field($_GET['s']) : '';
+    }
 
+    public function get_post_text_with_keyword($post_id, $keyword) {
+        $post_text = $this->get_post_text($post_id);
+        return $post_text;
+    }
+
+    public function get_post_text($post_id) {
+        global $wpdb;
+
+        $table_posts = $this->tables->posts;
+
+        $post_text = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT text FROM $table_posts WHERE id = %d",
+                $post_id
+            )
+        );
+
+        return $post_text;
+    }
+    
     public function render_topic_element($topic_object, $topic_type = 'topic-normal', $show_topic_location = false) {
         $lastpost_data = $this->get_lastpost_in_topic($topic_object->id);
         $unread_status = $this->unread->get_status_topic($topic_object->id);
@@ -1036,37 +1059,48 @@ class AsgarosForum {
         echo '<div class="content-element topic '.esc_attr($topic_type).'">';
             echo '<div class="topic-status '.esc_attr($unread_status).'"><i class="far fa-comments"></i></div>';
             echo '<div class="topic-name">';
-                if ($this->is_topic_sticky($topic_object->id)) {
-                    echo '<span class="topic-icon fas fa-thumbtack" title="'.esc_attr__('This topic is pinned', 'asgaros-forum').'"></span>';
+            if ($this->is_topic_sticky($topic_object->id)) {
+                echo '<span class="topic-icon fas fa-thumbtack" title="'.esc_attr__('This topic is pinned', 'asgaros-forum').'"></span>';
+            }
+    
+            if ($this->is_topic_closed($topic_object->id)) {
+                echo '<span class="topic-icon fas fa-lock" title="'.esc_attr__('This topic is closed', 'asgaros-forum').'"></span>';
+            }
+    
+            if ($this->polls->has_poll($topic_object->id)) {
+                echo '<span class="topic-icon fas fa-poll-h" title="'.esc_attr__('This topic contains a poll', 'asgaros-forum').'"></span>';
+            }
+    
+            echo '<a href="'.esc_url($this->get_link('topic', absint($topic_object->id))).'" title="'.esc_attr($topic_title).'">';
+            echo esc_html($topic_title);
+            echo '</a>';
+    
+            echo '<small>';
+            echo esc_html__('By', 'asgaros-forum').'&nbsp;'.$this->getUsername($topic_object->author_id);
+    
+            // Show the post text containing the searched keyword instead of the forum link in search results.
+            if ($show_topic_location) {
+                echo '<br>';
+    
+                echo esc_html__('Post Text:', 'asgaros-forum').'&nbsp;';
+    
+                $search_keywords = $this->get_search_keywords();
+    
+                $post_id = $lastpost_data->id; 
+    
+                if ($post_id) {
+                    $post_text = $this->get_post_text_with_keyword($post_id, $search_keywords);
+    
+                    // Display only the relevant part of the post text containing the searched keyword.
+                    echo esc_html($post_text);
+                } else {
+                    echo esc_html__('No post found.', 'asgaros-forum');
                 }
-
-                if ($this->is_topic_closed($topic_object->id)) {
-                    echo '<span class="topic-icon fas fa-lock" title="'.esc_attr__('This topic is closed', 'asgaros-forum').'"></span>';
-                }
-
-                if ($this->polls->has_poll($topic_object->id)) {
-                    echo '<span class="topic-icon fas fa-poll-h" title="'.esc_attr__('This topic contains a poll', 'asgaros-forum').'"></span>';
-                }
-
-                echo '<a href="'.esc_url($this->get_link('topic', absint($topic_object->id))).'" title="'.esc_attr($topic_title).'">';
-                echo esc_html($topic_title);
-                echo '</a>';
-
-                echo '<small>';
-                echo esc_html__('By', 'asgaros-forum').'&nbsp;'.$this->getUsername($topic_object->author_id);
-
-                // Show the name of the forum in which a topic is located in. This is currently only used for search results.
-                if ($show_topic_location) {
-                    echo '&nbsp;&middot;&nbsp;';
-                    echo esc_html__('In', 'asgaros-forum').'&nbsp;';
-                    echo '<a href="'.esc_url($this->rewrite->get_link('forum', absint($topic_object->forum_id))).'">';
-                    echo esc_html(stripslashes($topic_object->forum_name));
-                    echo '</a>';
-                }
-
-                $this->pagination->renderTopicOverviewPagination($topic_object->id, ($topic_object->answers + 1));
-
-                echo '</small>';
+            }
+    
+            $this->pagination->renderTopicOverviewPagination($topic_object->id, ($topic_object->answers + 1));
+    
+            echo '</small>';
 
                 // Show topic stats.
                 echo '<small class="topic-stats">';
