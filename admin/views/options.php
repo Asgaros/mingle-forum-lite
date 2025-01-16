@@ -242,6 +242,12 @@ if (!defined('ABSPATH')) {
                 <div class="tab" id="tab-features" style="display: <?php echo esc_attr($display); ?>;">
                     <?php $this->render_options_header('features'); ?>
                     <table>
+                    <tr>
+                            <th><label for="show_lastpost"><?php esc_html_e('Show last post in the overview', 'asgaros-forum'); ?></label></th>
+                            <td>
+                                <input type="checkbox" name="show_lastpost" id="show_lastpost" <?php checked($this->asgarosforum->options['show_lastpost']); ?>>
+                            </td>
+                        </tr>
                         <tr>
                             <th><label for="enable_avatars"><?php esc_html_e('Enable Avatars', 'asgaros-forum'); ?></label></th>
                             <td><input type="checkbox" name="enable_avatars" id="enable_avatars" <?php checked(!empty($this->asgarosforum->options['enable_avatars'])); ?>></td>

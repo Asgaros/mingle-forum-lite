@@ -67,6 +67,7 @@ class AsgarosForum {
         'signatures_permission'            => 'loggedin',
         'signatures_html_allowed'          => false,
         'signatures_html_tags'             => '<br><a><i><b><u><s><img><strong>',
+        'show_lastpost'                    => true,
         'enable_avatars'                   => true,
         'enable_mentioning'                => true,
         'enable_mentioning_suggestions'    => true,
@@ -1564,35 +1565,41 @@ class AsgarosForum {
 
     public function render_lastpost_in_forum($forum_id, $compact = false) {
         $lastpost = $this->get_lastpost_in_forum($forum_id);
-
+    
         if ($lastpost === false) {
             echo '<small class="no-topics">'.esc_html__('No topics yet!', 'asgaros-forum').'</small>';
         } else {
             $post_link = $this->rewrite->get_post_link($lastpost->id, $lastpost->parent_id);
-
-            if ($compact === true) {
-                echo esc_html__('Last post:', 'asgaros-forum');
-                echo '&nbsp;';
-                echo '<a href="'.esc_url($post_link).'">'.esc_html($this->cut_string(stripslashes($lastpost->name), 34)).'</a>';
-                echo '&nbsp;&middot;&nbsp;';
-                echo '<a href="'.esc_url($post_link).'">'.esc_html($this->get_activity_timestamp($lastpost->date)).'</a>';
-                echo '&nbsp;&middot;&nbsp;';
-                echo $this->getUsername($lastpost->author_id);
-            } else {
-                // Avatar
-                if ($this->options['enable_avatars']) {
-                    echo '<div class="forum-poster-avatar">'.get_avatar($lastpost->author_id, 40, '', '', array('force_display' => true)).'</div>';
+    
+            // Check if 'show_lastpost' option is checked
+            $show_lastpost = isset($this->options['show_lastpost']) ? $this->options['show_lastpost'] : $this->options_default['show_lastpost'];
+    
+            if ($show_lastpost) {
+                if ($compact === true) {
+                    // Display compact view
+                    echo esc_html__('Last post:', 'asgaros-forum');
+                    echo '&nbsp;';
+                    echo '<a href="'.esc_url($post_link).'">'.esc_html($this->cut_string(stripslashes($lastpost->name), 34)).'</a>';
+                    echo '&nbsp;&middot;&nbsp;';
+                    echo '<a href="'.esc_url($post_link).'">'.esc_html($this->get_activity_timestamp($lastpost->date)).'</a>';
+                    echo '&nbsp;&middot;&nbsp;';
+                    echo $this->getUsername($lastpost->author_id);
+                } else {
+                    // Display detailed view
+                    if ($this->options['enable_avatars'] && is_user_logged_in()) {
+                        $avatar_html = get_avatar($lastpost->author_id, 40, '', '', array('force_display' => true));
+                        echo '<div class="forum-poster-avatar"><a href="'.esc_url($post_link).'">'.$avatar_html.'</a></div>';
+                    }
+    
+                    echo '<div class="forum-poster-summary">';
+                    echo '<a href="'.esc_url($post_link).'">'.esc_html($this->cut_string(stripslashes($lastpost->name), 25)).'</a><br>';
+                    echo '<small>';
+                    echo '<a href="'.esc_url($post_link).'">'.esc_html($this->get_activity_timestamp($lastpost->date)).'</a>';
+                    echo '<span>&nbsp;&middot;&nbsp;</span>';
+                    echo $this->getUsername($lastpost->author_id);
+                    echo '</small>';
+                    echo '</div>';
                 }
-
-                // Summary
-                echo '<div class="forum-poster-summary">';
-                echo '<a href="'.esc_url($post_link).'">'.esc_html($this->cut_string(stripslashes($lastpost->name), 25)).'</a><br>';
-                echo '<small>';
-                echo '<a href="'.esc_url($post_link).'">'.esc_html($this->get_activity_timestamp($lastpost->date)).'</a>';
-                echo '<span>&nbsp;&middot;&nbsp;</span>';
-                echo $this->getUsername($lastpost->author_id);
-                echo '</small>';
-                echo '</div>';
             }
         }
     }
