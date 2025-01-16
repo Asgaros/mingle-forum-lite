@@ -245,7 +245,8 @@ class AsgarosForumAppearance {
 			$custom_css     .= '}'.PHP_EOL;
 
 			$custom_css     .= '#af-wrapper .button-normal:hover,'.PHP_EOL;
-			$custom_css     .= '#af-wrapper #profile-navigation a.active {'.PHP_EOL;
+			$custom_css 	.= '#af-wrapper #profile-navigation a.active,'.PHP_EOL;
+			$custom_css 	.= '#af-wrapper .form-submit input {'.PHP_EOL;
 				$custom_css .= 'background-color: '.$this->options['custom_accent_color'].' !important;'.PHP_EOL;
 			$custom_css     .= '}'.PHP_EOL;
 

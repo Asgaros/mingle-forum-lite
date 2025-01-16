@@ -14,6 +14,7 @@
 	white-space: -pre-wrap;
 	white-space: -o-pre-wrap;
 	word-wrap: break-word;
+	font-size: inherit;
 }
 #af-wrapper a {
 	color: #256db3;
@@ -1545,6 +1546,40 @@
 		width: 100%;
 		text-align: left;
 	}
+}
+
+/* EDIT PROFILE */
+#af-wrapper ul#profile-content.af-edit-profile {
+  width: 600px;
+}
+#af-wrapper #profile-content.af-edit-profile li.profile-row {
+padding: 0;
+margin-bottom: 2px;
+}
+#af-wrapper #profile-content.af-edit-profile .profile-row label {
+  display: inline-block;
+  float: left;
+  width: 35%;
+}
+#af-wrapper #profile-content.af-edit-profile .profile-row input:not([type="checkbox"]),
+#af-wrapper #profile-content.af-edit-profile .profile-row select,
+#af-wrapper #profile-content.af-edit-profile .profile-row textarea {
+  font-size: inherit;
+  float: left;
+  padding: 3px 6px;
+  width: 60%;
+  color: #666;
+}
+#af-wrapper #profile-content.af-edit-profile .profile-row input[type='submit'] {
+  width: 30%; 
+  color: #EEE;
+}
+#af-wrapper #profile-content.af-edit-profile .profile-row span {
+  clear:both;
+  display:block;
+  margin-left: 35%;
+  font-size: 80%;
+  color: #999;
 }
 
 /* MEMBERS LIST */

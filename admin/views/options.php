@@ -394,6 +394,10 @@ if (!defined('ABSPATH')) {
                                         <td><input class="regular-text" type="text" name="view_name_history" id="view_name_history" value="<?php echo esc_attr(stripslashes($this->asgarosforum->options['view_name_history'])); ?>"></td>
                                     </tr>
                                     <tr>
+                                        <th><label for="view_name_editprofile">editprofile:</label></th>
+                                        <td><input class="regular-text" type="text" name="view_name_editprofile" id="view_name_editprofile" value="<?php echo esc_attr(stripslashes($this->asgarosforum->options['view_name_editprofile'])); ?>"></td>
+                                    </tr>
+                                    <tr>
                                         <th><label for="view_name_unread">unread:</label></th>
                                         <td><input class="regular-text" type="text" name="view_name_unread" id="view_name_unread" value="<?php echo esc_attr(stripslashes($this->asgarosforum->options['view_name_unread'])); ?>"></td>
                                     </tr>

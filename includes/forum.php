@@ -139,6 +139,7 @@ class AsgarosForum {
         'view_name_markallread'            => 'markallread',
         'view_name_members'                => 'members',
         'view_name_profile'                => 'profile',
+		'view_name_editprofile'			   => 'edit',
         'view_name_history'                => 'history',
         'view_name_unread'                 => 'unread',
         'view_name_unapproved'             => 'unapproved',
@@ -465,6 +466,7 @@ class AsgarosForum {
                 }
                 break;
             case 'profile':
+			case 'editprofile':
             case 'history':
                 if (!$this->profile->functionalityEnabled()) {
                     $this->current_view = 'overview';
@@ -771,6 +773,8 @@ class AsgarosForum {
                 $mainTitle = $this->profile->get_profile_title();
             } else if ($this->current_view === 'history') {
                 $mainTitle = $this->profile->get_history_title();
+			} else if ($this->current_view === 'editprofile') {
+                $mainTitle = $this->profile->get_editprofile_title();
             } else if ($this->current_view === 'members') {
                 $mainTitle = __('Members', 'asgaros-forum');
             } else if ($this->current_view === 'activity') {
@@ -884,6 +888,9 @@ class AsgarosForum {
                 case 'history':
                     $this->profile->show_history();
                     break;
+				case 'editprofile':
+					$this->profile->showEditProfile();
+					break;
                 case 'members':
                     $this->memberslist->show_memberslist();
                     break;
