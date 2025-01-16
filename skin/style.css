@@ -2018,3 +2018,30 @@
 #af-wrapper .fas {
 	font-weight: 900;
 }
+
+/* TOPIC STATUS */
+.custom-dropdown select {
+    width: 130px; /* Set the desired width */
+}
+.inline-form label {
+    display: inline-block;
+    margin-right: 10px; /* Adjust as needed */
+}
+
+.inline-form .custom-dropdown {
+    display: inline-block ;
+}
+
+.inline-form select {
+    width: 130px; /* Set the desired width */
+}
+
+.inline-form input[type="submit"] {
+    display: inline-block;
+}
+
+#update-button{
+	color: #fff !important;
+	background-color: #096922;
+	padding: 5px;
+}
