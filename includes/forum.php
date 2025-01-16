@@ -35,6 +35,7 @@ class AsgarosForum {
     public $options         = array();
     public $options_default = array(
         'forum_title'                      => '',
+        'limit_forum_title'                => false,
         'forum_description'                => '',
         'location'                         => 0,
         'posts_per_page'                   => 10,

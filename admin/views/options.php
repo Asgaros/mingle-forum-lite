@@ -64,6 +64,35 @@ if (!defined('ABSPATH')) {
                         </tr>
 
                         <tr>
+                            <th><label for="limit_forum_title"><?php esc_html_e('Limit Forum Title:', 'asgaros-forum'); ?></label></th>
+                            <td>
+                                <input type="checkbox" name="limit_forum_title" id="limit_forum_title" <?php checked(!empty($this->asgarosforum->options['limit_forum_title'])); ?>>
+                                <div id="limit_forum_title_field">
+                                    <label for="forum_title_limit"><?php esc_html_e('Forum Title Limit:', 'asgaros-forum'); ?></label>
+                                    <?php
+                                        $disabled_attr = isset($this->asgarosforum->options['limit_forum_title']) && $this->asgarosforum->options['limit_forum_title'] ? '' : 'disabled="disabled"';
+                                        $forum_title_limit_value = isset($this->asgarosforum->options['forum_title_limit']) ? esc_attr($this->asgarosforum->options['forum_title_limit']) : '';
+
+                                        // Check if the checkbox is checked
+                                            if (!empty($_POST['limit_forum_title'])) {
+                                                // Log checkbox status
+                                                error_log('Checkbox is checked.');
+
+                                                // Get and sanitize the forum_title_limit value
+                                                $forum_title_limit_value = isset($_POST['forum_title_limit']) ? sanitize_text_field($_POST['forum_title_limit']) : '';
+
+                                                // Log and save the forum_title_limit value to options
+                                                error_log('Forum Title Limit: ' . $forum_title_limit_value);
+                                                $this->asgarosforum->options['forum_title_limit'] = $forum_title_limit_value;
+                                                update_option('asgarosforum_options', $this->asgarosforum->options);
+                                            }
+                                    ?>
+                                    <input type="number" name="forum_title_limit" id="forum_title_limit" value="<?php echo $forum_title_limit_value; ?>" <?php echo $disabled_attr; ?> data-maxlength="true">
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
                             <th>
                                 <label for="forum_description"><?php esc_html_e('Forum description:', 'asgaros-forum'); ?></label>
                                 <span class="description"><?php esc_html_e('The description is used for meta tags.', 'asgaros-forum'); ?></span>

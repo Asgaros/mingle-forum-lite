@@ -229,15 +229,26 @@ class AsgarosForumEditor {
 			// We need the tabindex attribute in the form for scrolling.
 			?>
             <form id="forum-editor-form" class="<?php echo esc_attr($editor_view); ?>-editor" tabindex="-1" name="addform" method="post" action="<?php echo esc_url($actionURL); ?>" enctype="multipart/form-data"<?php if ($inOtherView && !isset($_POST['subject']) && !isset($_POST['message'])) { echo ' style="display: none;"'; } ?>>
-                <div class="title-element"><?php if ($inOtherView) { echo esc_html($editorTitle); } ?></div>
                 <div class="editor-element">
-                    <?php if ($editor_view === 'addtopic' || ($editor_view == 'editpost' && $this->asgarosforum->is_first_post($post->id))) { ?>
-                        <div class="editor-row-subject">
-                            <label for="subject"><?php esc_html_e('Subject:', 'asgaros-forum'); ?></label>
-                            <span>
-                                <input class="editor-subject-input" type="text" id="subject" maxlength="255" name="subject" value="<?php echo esc_html(stripslashes($subject)); ?>">
-                            </span>
-                        </div>
+					<?php
+					if ($editor_view === 'addtopic' || ($editor_view == 'editpost' && $this->asgarosforum->is_first_post($post->id))) {
+					?>
+						<div class="editor-row-subject">
+							<label for="subject"><?php esc_html_e('Subject:', 'asgaros-forum'); ?></label>
+							<span>
+								<?php
+								// Ensure $forum_title_limit_value is defined
+								$forum_title_limit_value = isset($this->asgarosforum->options['forum_title_limit']) ? esc_attr($this->asgarosforum->options['forum_title_limit']) : '';
+								if ($forum_title_limit_value > 0) {
+									// Display a message indicating the content limit
+									echo '<p>' . sprintf(__('Maximum title length: %d characters', 'asgaros-forum'), $forum_title_limit_value) . '</p>';
+									
+								}
+								?>
+								<input class="editor-subject-input" type="text" id="subject" maxlength="<?php echo esc_attr($forum_title_limit_value); ?>" name="subject" value="<?php echo esc_html(stripslashes($subject)); ?>">
+							</span>
+						</div>
+
                     <?php
 					}
 

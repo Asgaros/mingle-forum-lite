@@ -6,13 +6,79 @@ window.FontAwesomeConfig = {
 (function($) {
     $(document).ready(function() {
         var editor = null;
-
+       
         if (wp && wp.codeEditor) {
             if ($('textarea[data-code-editor-mode]').length) {
                 wp.codeEditor.defaultSettings.codemirror.mode = $('textarea[data-code-editor-mode]').attr('data-code-editor-mode');
-                var editor                                    = wp.codeEditor.initialize($('textarea[data-code-editor-mode]'));
+                var editor = wp.codeEditor.initialize($('textarea[data-code-editor-mode]'));
             }
         }
+
+        var checkbox = $('#limit_forum_title');
+        var limitField = $('#limit_forum_title_field');
+        var forumTitleLimit = $('#forum_title_limit');
+        var subjectInput = $('#subject');
+        var form = $('#forum-editor-form');
+
+        // Function to validate subject length before form submission
+function validateForm() {
+    var maxLength = parseInt(forumTitleLimit.val(), 10);
+    var subjectLength = subjectInput.val().length;
+
+    // Log values for debugging
+    console.log('MaxLength:', maxLength);
+    console.log('SubjectLength:', subjectLength);
+
+    // Check if the subject length exceeds the limit
+    if (maxLength > 0 && subjectLength > maxLength) {
+        alert('Subject length exceeds the limit of ' + maxLength + ' characters. Please shorten the subject.');
+        return false; // Prevent form submission
+    }
+
+    return true; // Allow form submission
+}
+
+    // Add event listener for form submission
+    form.submit(function(event) {
+        console.log('Form submitted'); // Log to check if the event listener is triggered
+
+        // Update subject input maxlength before validation
+        updateSubjectInputMaxlength();
+
+        // Check the condition for validation
+        if (!validateForm()) {
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+
+    // Call the function on page load
+    updateSubjectInputMaxlength();
+
+        // Function to update subject input maxlength
+        function updateSubjectInputMaxlength() {
+            var maxLength = parseInt(forumTitleLimit.val(), 10);
+        
+            // Set the maxlength attribute based on the forum_title_limit value
+            subjectInput.attr('maxlength', maxLength > 0 ? maxLength : null);
+        }
+
+        // Initial state
+        limitField.toggle(checkbox.prop('checked'));
+        forumTitleLimit.prop('disabled', !checkbox.prop('checked'));
+        updateSubjectInputMaxlength(); // Call the function to set maxlength initially
+
+        // Add event listener for checkbox change
+        checkbox.change(function () {
+            limitField.toggle(this.checked);
+            forumTitleLimit.prop('disabled', !this.checked);
+            updateSubjectInputMaxlength(); // Call the function when checkbox changes
+        });
+
+        // Add event listener for forum title limit change
+        forumTitleLimit.change(function () {
+            updateSubjectInputMaxlength(); // Call the function when forum title limit changes
+        });
+
 
         // Settings-tabs toggle.
         $('#af-options #settings-tabs li').click(function() {
